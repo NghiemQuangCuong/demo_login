@@ -8,7 +8,7 @@ function addUser(user)
     if (user)
     {
         const defer = q.defer();
-
+        
         conn.query('INSERT INTO user SET ?', user, (err, result) => {
             if (err)
                 defer.reject(err);
