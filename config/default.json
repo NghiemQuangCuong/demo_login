@@ -10,5 +10,11 @@
         "database": "demo_web",
         "user": "super",
         "password": "password"
-    }
+    },
+    "bcrypt": 
+    {
+        "salt": 10
+    },
+    "secret_key": "very very secret key"
+    
 }

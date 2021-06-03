@@ -1,6 +1,8 @@
 const express = require('express');
-const router = express.Router();
 const model_user = require('../models/user');
+const helpers = require('../helpers/helpers');
+
+const router = express.Router();
 
 router.get('/', (req, res) => {
     res.render('signup');
@@ -14,18 +16,17 @@ router.post('/', (req, res) => {
         // user is legal then construct userToAdd match database
         const userToAdd = {
             email: user.email,
-            password: user.password,
+            password: helpers.hashPassword(user.password),
             first_name: user.first_name,
             last_name: user.last_name,
         };
 
         // add userToAdd to database
-        const result = model_user.addUser(userToAdd);
-
-        if (!result)
+        model_user.addUser(userToAdd).then((data) => {
+            res.redirect('/login');
+        }).catch((err) => {
             res.render('signup', {info: "Can not insert into database"});
-        else 
-            res.render('signup', {info: "Register sucess!"});
+        });
     }
 
     return;

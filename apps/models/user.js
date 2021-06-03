@@ -9,7 +9,24 @@ function addUser(user)
     {
         const defer = q.defer();
 
-        const query = conn.query('INSERT INTO user SET ?', user, (err, result) => {
+        conn.query('INSERT INTO user SET ?', user, (err, result) => {
+            if (err)
+                defer.reject(err);
+            else 
+                defer.resolve(result);
+        });
+
+        return defer.promise;
+    }
+}
+
+function findUserByEmail(email)
+{
+    if (email)
+    {
+        const defer = q.defer();
+
+        conn.query('SELECT * FROM user WHERE ?', {email: email}, (err, result) => {
             if (err)
                 defer.reject(err);
             else 
@@ -23,3 +40,4 @@ function addUser(user)
 }
 
 exports.addUser = addUser;
+exports.findUserByEmail = findUserByEmail;

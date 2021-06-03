@@ -1,4 +1,8 @@
 const express = require('express');
+const helpers = require('../helpers/helpers');
+const model_user = require('../models/user');
+
+
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -6,21 +10,52 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-    const user = req.body;
+    const params = req.body;
 
-    if (user.email.trim().length === 0)
+    if (checkValid(params, res))
     {
-        return res.render("login", {"error": "Email is empty"});
-    }
-    if (user.passwd.trim().length === 0)
-    {
-        return res.render("login", {"error": "Password is empty"});
-    }
-    if (user.firstname.trim().length === 0)
-    {
-        return res.render("login", {"error": "First name is empty"});
-    }
 
+    }
+    
+    return;
 });
+
+
+function checkValid(params, res)
+{
+    if (params.email.trim().length == 0)
+    {
+        res.render('login', {info: "Chua nhap ten dang nhap kia` >.<"});
+        return false;
+    }
+
+    if (params.password.trim().length == 0)
+    {
+        res.render('login', {info: "Chua nhap mat khau kia` >.<"});
+        return false;
+    }
+
+    // check if username is in database
+    const data = model_user.findUserByEmail(params.email);
+
+    data.then((data) => {
+        // lay gia tri dau tien trong chuoi ket qua tra ve tu db
+        const user = data[0];
+
+        const status = helpers.comparePassword(params.password, user.password);
+        if (!status)
+        {
+            res.render('login', {info: "Sai mat khau rui >.<"});
+        }
+        else 
+        {
+            res.redirect('/success');
+        }
+    }).catch((err) => {
+        res.render('login', {info: "Khong co user, tao moi di nek >.<"});
+    })
+
+    return true;
+}
 
 module.exports = router;
