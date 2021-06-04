@@ -23,7 +23,7 @@ router.post('/', (req, res) => {
 
         // add userToAdd to database
         model_user.addUser(userToAdd).then((data) => {
-            res.redirect('/login');
+            res.redirect('/admin/login');
         }).catch((err) => {
             res.render('signup', {info: "Can not insert into database"});
         });

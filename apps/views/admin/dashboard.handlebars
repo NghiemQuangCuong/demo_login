@@ -1,0 +1,81 @@
+<head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
+</head>
+
+<body>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/admin">Blog Admin</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/admin">Posts</a></li>
+                <li><a href="/admin/user">User</a></li>
+            </ul>
+        </div>
+    </nav>
+
+     
+    <div class='row' style='margin-bottom: 10px'>
+        <div class='col-md-12'>
+            <a href='/admin/post/new' class='btn btn-success pull-left'>Add new Post</a>
+        </div>
+    </div>
+
+    <div class='panel panel-default'>
+        <div class='panel-heading'>
+            Posts
+        </div>
+
+        <div class='panel-body'>
+            <div class='table-responsive'>
+                <table class='table table-striped table-bordered tabel-hover'>
+                    <thread>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Content</th>
+                            <th>Author</th>
+                            <th>Created At</th>
+                            <th>Last Edit</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thread>
+
+                    <!-- body table here -->
+                    <input type="hidden" start_id=
+                    <tbody>
+                        {{#if data.error}}
+                            {{error_detail}}
+                        {{else}}
+                        {{#each data.posts}}
+                            <tr>
+                                <td>{{id}}</td>
+                                <td>{{title}}</td>
+                                <td>{{content}}</td>
+                                <td>{{author}}</td>
+                                <td>{{created_at}}</td>
+                                <td>{{updated_at}}</td>
+                                <td>
+                                    <a href='/admin/post/edit/{{id}}' class='btn btn-primary'> Edit </a>
+                                    <a class='btn btn-danger' onClick='onClickDelete({{id}})'> Delete </a>
+                                </td>
+                            </tr>
+                        {{/each}}
+                        {{/if}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+   
+   <script src='/js/post.js'></script>
+</body>

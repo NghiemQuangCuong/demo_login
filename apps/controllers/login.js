@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     const params = req.body;
 
-    if (checkValid(params, res))
+    if (checkValid(params, req, res))
     {
 
     }
@@ -21,7 +21,7 @@ router.post('/', (req, res) => {
 });
 
 
-function checkValid(params, res)
+function checkValid(params, req, res)
 {
     if (params.email.trim().length == 0)
     {
@@ -49,7 +49,9 @@ function checkValid(params, res)
         }
         else 
         {
-            res.redirect('/success');
+            req.session.user = user;
+            console.log(req.session.user);
+            res.redirect('/admin/success');
         }
     }).catch((err) => {
         res.render('login', {info: "Khong co user, tao moi di nek >.<"});
