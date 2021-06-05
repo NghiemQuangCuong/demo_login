@@ -12,17 +12,6 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     const params = req.body;
 
-    if (checkValid(params, req, res))
-    {
-
-    }
-    
-    return;
-});
-
-
-function checkValid(params, req, res)
-{
     if (params.email.trim().length == 0)
     {
         res.render('login', {info: "Chua nhap ten dang nhap kia` >.<"});
@@ -50,14 +39,12 @@ function checkValid(params, req, res)
         else 
         {
             req.session.user = user;
-            console.log(req.session.user);
-            res.redirect('/admin/success');
+            res.redirect('/admin');
         }
     }).catch((err) => {
         res.render('login', {info: "Khong co user, tao moi di nek >.<"});
     })
-
-    return true;
-}
+    
+});
 
 module.exports = router;

@@ -9,8 +9,9 @@ router.delete('/', (req, res) => {
     .then((result) => {
         res.json({statusCode: 200});
     })
-    .catch((result) => {
+    .catch((error) => {
         res.json({statusCode: 500});
+        console.log(error.message);
     });
 });
 

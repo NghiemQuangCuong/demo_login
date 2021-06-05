@@ -3,9 +3,15 @@ const post = require('../../../models/post');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    res.render('admin/post/new', {data: 
-        {error: false}
-    });
+    if (req.session.user)
+    {
+        res.render('admin/post/new', {data: 
+            {error: false}
+        });
+    }
+    else 
+        res.redirect('/admin/login');
+    
 });
 
 router.post('/', (req, res) => {

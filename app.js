@@ -24,13 +24,13 @@ app.engine("handlebars", expressHandlebars({defaultLayout: "main"}));
 //set view engine
 app.set("view engine", "handlebars");
 
-//set session ??
+//set session 
 app.set("trust proxy", 1);
 app.use(expressSession({
     secret: config.get("secret_key"),
     resave: false,
     saveUninitialized: true,
-    cookie: {secure: true}
+    cookie: {secure: false}
 }));
 
 
