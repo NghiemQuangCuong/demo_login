@@ -3,18 +3,21 @@ const post = require('../models/post');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-
-  // create data objects
-  post.getAllPost().then(result => {
-      const data = {
-          posts: result,
-          error: false
-      };
-
-      res.render('admin/dashboard', {data: data});
-  }).catch(err => {
-      res.render('admin/dashboard', {data: {error: err.message}})
-  })
+    if (req.session.user)
+    {
+        // create data objects
+        post.getAllPost().then(result => {
+            const data = {
+                posts: result,
+                error: false
+            };
+            res.render('admin/dashboard', {data: data});
+        }).catch(err => {
+            res.render('admin/dashboard', {data: {error: err.message}})
+        });
+    }
+    else 
+        res.redirect('/admin/login');
 });
 
 router.use('/login', require('./login'));

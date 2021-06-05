@@ -1,28 +1,37 @@
+const e = require('express');
 const express = require('express');
 const model_post = require('../../../models/post');
 const router = express.Router({mergeParams: true});
 
 router.get('/', (req, res) => {
-    const requestParams = req.params;
-
-    const data = model_post.getPostById(requestParams);
-
-    if (data) 
+    if (req.session.user)
     {
-        data.then((result) => {
-            const post = result[0];
+        const requestParams = req.params;
 
-            res.render('admin/post/edit.handlebars', {data: {post: post}});
-        }).catch((err) => {
-            res.render('admin');
-            console.log(err.message);
-        })
+        if (requestParams == {})
+            res.render('admin/post/dashboard');
+
+        const data = model_post.getPostById(requestParams);
+
+        if (data) 
+        {
+            data.then((result) => {
+                const post = result[0];
+
+                res.render('admin/post/edit.handlebars', {data: {post: post}});
+            }).catch((err) => {
+                res.render('admin');
+                console.log(err.message);
+            })
+        }
+        else 
+        {
+            res.render('admin/post/dashboard');
+            console.log('loi bat thuong controllers/admin/post/edit.js:22');
+        }
     }
     else 
-    {
-        res.render('admin');
-        console.log('loi bat thuong controllers/admin/post/edit.js:22');
-    }
+        res.redirect('/admin/login');
 });
 
 router.put('/', (req, res) => {
