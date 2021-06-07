@@ -38,7 +38,7 @@ router.post('/', (req, res) => {
         }
         else 
         {
-            req.session.user = user;
+            req.session.user = user.email;
             res.redirect('/admin');
         }
     }).catch((err) => {

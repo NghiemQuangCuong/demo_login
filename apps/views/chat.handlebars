@@ -1,0 +1,69 @@
+  <head>
+    <title>Socket.IO chat</title>
+    <style>
+      body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+
+      #form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
+      #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
+      #input:focus { outline: none; }
+      #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
+
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages > li { padding: 0.5rem 1rem; }
+      #messages > li:nth-child(odd) { background: #efefef; }
+    </style>
+  </head>
+  <body>
+
+    <input type="hidden" id='user_email' value='{{user_email}}'>
+
+    <div>
+      <ul id="messages"></ul>
+      <form id="form" action="">
+        <input id="input" autocomplete="off" /><button>Send</button>
+      </form>
+    </div>
+
+    {{!-- <div>
+      <ul id="user_online"></ul>
+    </div> --}}
+
+    <script src='/socket.io/socket.io.js'></script>
+    <script>
+      const socket = io();
+      const user_name = document.getElementById('user_email').value;
+
+      const messages = document.getElementById('messages');
+      const form = document.getElementById('form');
+      const message = document.getElementById('input');
+
+      // init basic info to server
+      socket.emit('init_user', {user_name: user_name});
+
+      // listen to update message and update view
+      socket.on('update_message', data => {
+
+        const item = document.createElement('li');
+        console.log(data.sender);
+        console.log(data.message);
+        const sender = data.sender == user_name ? `YOU` : data.sender;
+        const message = data.message;
+        item.textContent = `${sender}: ${message}`;
+        console.log(item.textContent);
+        messages.appendChild(item);
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+
+      // set event listener for form when user submit
+      form.addEventListener('submit', evt => {
+        evt.preventDefault();
+        if (message.value.trim().length != 0)
+        {
+          socket.emit('message_send', message.value);
+          message.value = '';
+        }
+      });
+
+    </script>
+    
+  </body>

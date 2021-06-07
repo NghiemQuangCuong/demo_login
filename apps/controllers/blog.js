@@ -50,8 +50,6 @@ router.get('/post/:id', (req, res) => {
             post: result[0],
             error: false
         };
-
-        console.log(data);
         res.render('blog/post', data);
     })
     .catch((error) => {
